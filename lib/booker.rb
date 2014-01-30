@@ -18,9 +18,23 @@ module Booker
       url = "http://stable-app.secure-booker.com/WebService4/json/customerService.svc/treatments"
       defaults = {
         "access_token" => @access_token,
+        "AllowOnGiftCertificateSale" => nil,
+        "CategoryID" => nil,
+        "EmployeeID" => nil,
+        "LocationID" => nil,
         "PageNumber" => 1,
-        "PageSize" => 2,
+        "PageSize" => 10,
+        "SortBy" => [
+          {
+            "SortBy" => "Name",
+            "SortDirection" => 0
+          }
+        ],
+        "SubCategoryID" => nil,
         "UsePaging" => true,
+        "ExcludeClassesAndWorkshops" => nil,
+        "OnlyClassesAndWorkshops" => nil,
+        "SkipLoadingRoomsAndEmployees" => nil,
       }
       return_response url, defaults, options
     end
@@ -33,10 +47,12 @@ module Booker
         "BusinessTypeId" => nil,
         "PageNumber" => 1,
         "PageSize" => 5,
-        "SortBy" => {
-          "SortBy" => "Name",
-          "SortDirection" => 0
-        },
+        "SortBy" => [
+          {
+            "SortBy" => "Name",
+            "SortDirection" => 0
+          }
+        ],
         #"UsePaging" => true, # throws a weird exception about null arguments
         "Name" => nil
       }
