@@ -15,7 +15,7 @@ module Booker
 
     # http://apidoc.booker.com/Method/Detail/123
     def find_treatments options = {}
-      url = "http://stable-app.secure-booker.com/WebService4/json/customerService.svc/treatments"
+      url = build_url "/treatments"
       defaults = {
         "access_token" => @access_token,
         "AllowOnGiftCertificateSale" => nil,
@@ -41,7 +41,7 @@ module Booker
 
     # http://apidoc.booker.com/Method/Detail/853
     def find_locations_partial options = {}
-      url = "http://stable-app.secure-booker.com/WebService4/json/customerService.svc/locations/partial"
+      url = build_url "/locations/partial"
       defaults = {
         "access_token" => @access_token,
         "BusinessTypeId" => nil,
