@@ -13,6 +13,32 @@ module Booker
       set_access_token
     end
 
+    def run_multi_service_availability options = {}
+      url = build_url "/availability/multiservice"
+      raise 'Itineraries is required' unless options['Itineraries']
+      defaults =
+        {
+        "access_token" => @access_token,
+        "EndDateTime" => "/Date(#{Time.now.to_i})/",
+        "Itineraries" => [
+          #{
+            #"IsPackage" => false,
+            #"PackageID" => nil,
+            #"Treatments" => [
+              #{
+                #"EmployeeID" => nil,
+                #"TreatmentID" => nil
+              #}
+            #]
+          #}
+        ],
+        "LocationID" => nil,
+        "MaxTimesPerDay" => nil,
+        "StartDateTime" => "/Date(#{Time.now.to_i + 60 * 60 * 24})/",
+      }
+      return_response url, defaults, options
+    end
+
     # http://apidoc.booker.com/Method/Detail/123
     def find_treatments options = {}
       url = build_url "/treatments"

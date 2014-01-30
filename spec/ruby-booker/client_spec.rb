@@ -24,4 +24,32 @@ describe Booker do
     end
   end
 
+  describe '#run_multi_service_availability' do
+    before do
+      locations = client.find_locations_partial['Results']
+      @location = locations.first
+      @treatments = client.find_treatments("LocationID" => @location['ID'])['Treatments']
+    end
+
+    it 'returns results' do
+
+      itineraries = @treatments.map do |treatment|
+        {
+          "IsPackage" => false,
+          "Treatments" => [
+            {
+              "TreatmentID" => treatment['ID']
+            }
+          ]
+        }
+      end
+
+      response = client.run_multi_service_availability(
+        "LocationID" => @location['ID'],
+        "Itineraries" => itineraries
+      )
+      response['ItineraryTimeSlotsLists'].length.should > 0
+    end
+  end
+
 end
