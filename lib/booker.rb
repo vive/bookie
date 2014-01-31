@@ -13,9 +13,10 @@ module Booker
       set_access_token
     end
 
+    #http://apidoc.booker.com/Method/Detail/129
     def run_multi_service_availability options = {}
+      raise Booker::ArgumentError, 'Itineraries is required' unless options['Itineraries']
       url = build_url "/availability/multiservice"
-      raise 'Itineraries is required' unless options['Itineraries']
       defaults =
         {
         "access_token" => @access_token,
@@ -36,11 +37,12 @@ module Booker
         "MaxTimesPerDay" => nil,
         "StartDateTime" => "/Date(#{Time.now.to_i + 60 * 60 * 24})/",
       }
-      return_response url, defaults, options
+      return_post_response url, defaults, options
     end
 
     # http://apidoc.booker.com/Method/Detail/123
     def find_treatments options = {}
+      raise Booker::ArgumentError, 'LocationID is required' unless options['LocationID']
       url = build_url "/treatments"
       defaults = {
         "access_token" => @access_token,
@@ -62,7 +64,7 @@ module Booker
         "OnlyClassesAndWorkshops" => nil,
         "SkipLoadingRoomsAndEmployees" => nil,
       }
-      return_response url, defaults, options
+      return_post_response url, defaults, options
     end
 
     # http://apidoc.booker.com/Method/Detail/853
@@ -82,16 +84,40 @@ module Booker
         #"UsePaging" => true, # throws a weird exception about null arguments
         "Name" => nil
       }
-      return_response url, defaults, options
+      return_post_response url, defaults, options
     end
 
+    #http://apidoc.booker.com/Method/Detail/125
+    def get_treatment_categories location_id
+      url = build_url "/treatment_categories",
+            "?access_token=#{@access_token}&culture_name=&location_id=#{location_id}"
+      return_get_response url
+    end
+
+    #http://apidoc.booker.com/Method/Detail/126
+    def get_treatment_sub_categories location_id, category_id
+      url = build_url "/treatment_subcategories",
+            "?access_token=#{@access_token}&culture_name=&location_id=#{location_id}&category_id=#{category_id}"
+      return_get_response url
+    end
 
     private
 
-      def return_response url, defaults, options
+      def return_post_response url, defaults, options
         options = defaults.merge(options)
         response = post url, options
-        JSON.parse(response.body)
+        parse_body response.body
+      end
+
+      def return_get_response url
+        response = get url
+        parse_body response.body
+      end
+
+      def parse_body body
+        body = JSON.parse(body)
+        raise Booker::ApiSuccessFalseError if body['IsSuccess'] == false
+        body
       end
 
       def post url, post_data
@@ -99,8 +125,13 @@ module Booker
           body: post_data.to_json,
           headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
         }
-        HTTParty.post(url, options)
+        HTTParty.post url, options
       end
+
+      def get url
+        HTTParty.get url
+      end
+
 
       def set_access_token
         url      = build_url '/access_token', "?client_id=#{@key}&client_secret=#{@secret}&grant_type=client_credentials"
@@ -123,4 +154,7 @@ module Booker
         base_url + path + query
       end
   end
+
+  class ArgumentError < StandardError; end
+  class ApiSuccessFalseError < StandardError; end
 end
