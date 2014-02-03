@@ -92,7 +92,6 @@ describe Booker::Client do
     describe '#get_location_online_booking_settings' do
       it "is success" do
         response =  client.get_location_online_booking_settings @location['ID']
-        response['IsSuccess'].should be_true
         it_should_be_success response
       end
     end
