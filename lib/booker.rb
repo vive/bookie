@@ -67,6 +67,26 @@ module Booker
       return_post_response url, defaults, options
     end
 
+    # http://apidoc.booker.com/Method/Detail/852
+    def find_locations options = {}
+      url = build_url "/locations"
+      defaults = {
+        "access_token" => @access_token,
+        "BusinessTypeId" => nil,
+        "PageNumber" => 1,
+        "PageSize" => 5,
+        "SortBy" => [
+          {
+            "SortBy" => "Name",
+            "SortDirection" => 0
+          }
+        ],
+        #"UsePaging" => true, # throws a weird exception about null arguments
+        "Name" => nil
+      }
+      return_post_response url, defaults, options
+    end
+
     # http://apidoc.booker.com/Method/Detail/853
     def find_locations_partial options = {}
       url = build_url "/locations/partial"

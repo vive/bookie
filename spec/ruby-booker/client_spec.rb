@@ -8,6 +8,13 @@ describe Booker::Client do
     response['IsSuccess'].should be_true
   end
 
+  describe '#find_locations' do
+    it 'is success' do
+      response = client.find_locations
+      it_should_be_success response
+    end
+  end
+
   describe '#find_locations_partial' do
     it 'is success' do
       response = client.find_locations_partial
