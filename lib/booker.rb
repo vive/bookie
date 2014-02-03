@@ -20,7 +20,7 @@ module Booker
       defaults =
         {
         "access_token" => @access_token,
-        "EndDateTime" => "/Date(#{Time.now.to_i})/",
+        "StartDateTime" => "/Date(#{Time.now.to_i})/",
         "Itineraries" => [
           #{
             #"IsPackage" => false,
@@ -35,7 +35,7 @@ module Booker
         ],
         "LocationID" => nil,
         "MaxTimesPerDay" => nil,
-        "StartDateTime" => "/Date(#{Time.now.to_i + 60 * 60 * 24})/",
+        "EndDateTime" => "/Date(#{Time.now.to_i + 60 * 60 * 24})/",
       }
       return_post_response url, defaults, options
     end
@@ -104,6 +104,13 @@ module Booker
     #http://apidoc.booker.com/Method/Detail/153
     def get_location location_id
       url = build_url "/location/#{location_id}", "?access_token=#{@access_token}"
+      return_get_response url
+    end
+
+    #http://apidoc.booker.com/Method/Detail/134
+    def get_location_online_booking_settings location_id
+      url = build_url "/location/#{location_id}/online_booking_settings",
+              "?access_token=#{@access_token}"
       return_get_response url
     end
 
