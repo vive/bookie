@@ -4,10 +4,14 @@ describe Booker::Client do
   #let(:client){ Booker::Client.new(Auth::PROD_KEY, Auth::PROD_SECRET) }
   let(:client){ Booker::Client.new(Auth::KEY, Auth::SECRET) }
 
+  def it_should_be_success response
+    response['IsSuccess'].should be_true
+  end
+
   describe '#find_locations_partial' do
     it 'is success' do
       response = client.find_locations_partial
-      response['IsSuccess'].should be_true
+      it_should_be_success response
     end
   end
 
@@ -23,7 +27,7 @@ describe Booker::Client do
         response = client.find_treatments(
           "LocationID" => @location['ID'], "PageNumber" => 1, "PageSize" => 5
         )
-        response['IsSuccess'].should be_true
+        it_should_be_success response
       end
     end
 
@@ -49,7 +53,7 @@ describe Booker::Client do
           "LocationID" => @location['ID'],
           "Itineraries" => itineraries
         )
-        response['IsSuccess'].should be_true
+        it_should_be_success response
       end
 
       it "requires itineraries field" do
@@ -62,7 +66,7 @@ describe Booker::Client do
     describe '#get_treatment_categories' do
       it "is success" do
         response =  client.get_treatment_categories @location['ID']
-        response['IsSuccess'].should be_true
+        it_should_be_success response
       end
     end
 
@@ -74,14 +78,14 @@ describe Booker::Client do
 
       it "is success" do
         response =  client.get_treatment_sub_categories @location['ID'], @category['ID']
-        response['IsSuccess'].should be_true
+        it_should_be_success response
       end
     end
 
     describe '#get_location' do
       it "is success" do
         response =  client.get_location @location['ID']
-        response['IsSuccess'].should be_true
+        it_should_be_success response
       end
     end
 
@@ -89,6 +93,7 @@ describe Booker::Client do
       it "is success" do
         response =  client.get_location_online_booking_settings @location['ID']
         response['IsSuccess'].should be_true
+        it_should_be_success response
       end
     end
   end
