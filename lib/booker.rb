@@ -129,7 +129,7 @@ module Booker
 
       def parse_body body
         body = JSON.parse(body)
-        raise Booker::ApiSuccessFalseError if body['IsSuccess'] == false
+        raise Booker::ApiSuccessFalseError, body if body['IsSuccess'] == false
         body
       end
 
