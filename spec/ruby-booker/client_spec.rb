@@ -84,4 +84,17 @@ describe Booker::Client do
     end
   end
 
+  describe '#get_location' do
+    before do
+      @locations = client.find_locations_partial['Results']
+      @location = @locations.first
+    end
+
+    it "is success" do
+      response =  client.get_location @location['ID']
+      p response
+      response['IsSuccess'].should be_true
+    end
+  end
+
 end

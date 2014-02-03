@@ -101,6 +101,12 @@ module Booker
       return_get_response url
     end
 
+    #http://apidoc.booker.com/Method/Detail/153
+    def get_location location_id
+      url = build_url "/location/#{location_id}", "?access_token=#{@access_token}"
+      return_get_response url
+    end
+
     private
 
       def return_post_response url, defaults, options
