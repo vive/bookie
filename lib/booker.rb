@@ -13,6 +13,38 @@ module Booker
       set_access_token
     end
 
+    # Useful to pull all of paged results and return them as if you did one
+    # request for them all
+    #
+    # ex: client.all(:find_locations, 'Results')
+    def all method, result_name, options = {}
+      page_number = 1
+      results = []
+
+      # this allows page size to be overidden but NOT page_number as I want to
+      # control that to know when we have all results
+      options = {"PageSize" => 500}.merge options
+
+      begin
+        options.merge!({
+          "PageNumber" => page_number,
+        })
+
+        last_result = self.send(method, options)
+
+        results << last_result[result_name]
+        results.flatten!
+
+        total_results  = last_result['TotalResultsCount']
+
+        page_number+=1
+      end while results.length < total_results-1
+
+      last_result.merge({
+        result_name => results
+      })
+    end
+
     #http://apidoc.booker.com/Method/Detail/129
     def run_multi_service_availability options = {}
       raise Booker::ArgumentError, 'Itineraries is required' unless options['Itineraries']
@@ -51,7 +83,7 @@ module Booker
         "EmployeeID" => nil,
         "LocationID" => nil,
         "PageNumber" => 1,
-        "PageSize" => 10,
+        "PageSize" => 100,
         "SortBy" => [
           {
             "SortBy" => "Name",
@@ -72,7 +104,9 @@ module Booker
       url = build_url "/locations"
       defaults = {
         "access_token" => @access_token,
-        "BusinessTypeId" => nil,
+        "BrandID" => nil,
+        "BusinessName" => nil,
+        "FeatureLevel" => nil,
         "PageNumber" => 1,
         "PageSize" => 5,
         "SortBy" => [
@@ -81,8 +115,7 @@ module Booker
             "SortDirection" => 0
           }
         ],
-        #"UsePaging" => true, # throws a weird exception about null arguments
-        "Name" => nil
+        "UsePaging" => true, # throws a weird exception about null arguments
       }
       return_post_response url, defaults, options
     end

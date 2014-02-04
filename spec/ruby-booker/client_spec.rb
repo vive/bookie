@@ -22,6 +22,13 @@ describe Booker::Client do
     end
   end
 
+  describe '#all' do
+    it 'is success' do
+      response = client.all(:find_locations, 'Results')
+      it_should_be_success response
+    end
+  end
+
   context 'requires locations' do
     before do
       @locations = client.find_locations_partial['Results']
