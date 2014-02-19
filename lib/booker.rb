@@ -35,7 +35,11 @@ module Booker
         results << last_result[result_name]
         results.flatten!
 
-        total_results  = last_result['TotalResultsCount'] || 0
+        if last_result['TotalResultsCount']
+          total_results  = last_result['TotalResultsCount']
+        else
+          total_results = 0
+        end
 
         page_number+=1
       end while results.length < total_results-1
