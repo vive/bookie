@@ -1,9 +1,9 @@
 Gem::Specification.new do |s|
   s.name        = 'ruby-booker'
-  s.version     = '0.0.0'
-  s.date        = '2014-02-03'
-  s.summary     = "Interact with booker api"
-  s.description = "Interact with booker api in rails"
+  s.version     = '0.0.1'
+  s.date        = '2014-02-19'
+  s.summary     = "Ruby querying of Booker API"
+  s.description = "Interact with booker api through Ruby"
   s.authors     = ["Jake Craige"]
   s.email       = 'jake@poeticsystems.com'
   s.files       = ["lib/ruby-booker.rb", "LICENSE", "lib/booker.rb"]
