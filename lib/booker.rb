@@ -1,4 +1,5 @@
 require 'httparty'
+require 'booker/helpers'
 
 module Booker
   BASE_HOST = "stable-app.secure-booker.com"
@@ -47,6 +48,21 @@ module Booker
       last_result.merge({
         result_name => results
       })
+    end
+
+    def run_service_availability options = {}
+      url = build_url '/availability/service'
+      defaults = {
+          "EndDateTime" => "/Date(1337223600000)/",
+          "LocationID" => 3749,
+          "MaxTimesPerTreatment" => 5,
+          "StartDateTime" => "/Date(1337004000000)/",
+          "TreatmentCategoryID" => 1,
+          "TreatmentSubCategoryID" => 218,
+          "access_token" => @access_token
+      }
+      # TODO: run options given start/end time through booker:helpers.format_date
+      return_post_response url, defaults, options
     end
 
     #http://apidoc.booker.com/Method/Detail/129

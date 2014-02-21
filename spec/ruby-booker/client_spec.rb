@@ -45,35 +45,51 @@ describe Booker::Client do
       end
     end
 
-    describe '#run_multi_service_availability' do
+    context 'requires treatments' do
       before do
         @treatments = client.find_treatments("LocationID" => @location['ID'])['Treatments']
       end
 
-      it 'is success' do
-
-        itineraries = @treatments.map do |treatment|
-          {
-            "IsPackage" => false,
-            "Treatments" => [
-              {
-                "TreatmentID" => treatment['ID']
-              }
-            ]
-          }
+      describe '#run_service_availability' do
+        it 'is success' do
+          response = client.run_service_availability(
+            "LocationID" => @location['ID'],
+            "StartDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 5),
+            "EndDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 8),
+            "TreatmentCategoryID" => 29,
+            "TreatmentSubCategoryID" => 170
+          )
+          it_should_be_success response
         end
-
-        response = client.run_multi_service_availability(
-          "LocationID" => @location['ID'],
-          "Itineraries" => itineraries
-        )
-        it_should_be_success response
       end
 
-      it "requires itineraries field" do
-        expect {
-          client.run_multi_service_availability("LocationID" => @location['ID'])
-        }.to raise_error(Booker::ArgumentError)
+      describe '#run_multi_service_availability' do
+        it 'is success' do
+          itineraries = @treatments.map do |treatment|
+            {
+              "IsPackage" => false,
+              "Treatments" => [
+                {
+                  "TreatmentID" => treatment['ID']
+                }
+              ]
+            }
+          end
+
+          response = client.run_multi_service_availability(
+            "LocationID" => @location['ID'],
+            "Itineraries" => itineraries,
+            "StartDateTime" => Booker::Helpers.format_date(Time.now),
+            "EndDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 10),
+          )
+          it_should_be_success response
+        end
+
+        it "requires itineraries field" do
+          expect {
+            client.run_multi_service_availability("LocationID" => @location['ID'])
+          }.to raise_error(Booker::ArgumentError)
+        end
       end
     end
 

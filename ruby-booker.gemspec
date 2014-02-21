@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Interact with booker api through Ruby"
   s.authors     = ["Jake Craige"]
   s.email       = 'jake@poeticsystems.com'
-  s.files       = ["lib/ruby-booker.rb", "LICENSE", "lib/booker.rb"]
+  s.files       = ["lib/ruby-booker.rb", "LICENSE", "lib/booker.rb", "lib/booker/helpers.rb"]
   s.require_paths = ["lib"]
   s.homepage    =
     'http://rubygems.org/gems/ruby-booker'
