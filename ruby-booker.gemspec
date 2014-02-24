@@ -12,5 +12,7 @@ Gem::Specification.new do |s|
     'http://rubygems.org/gems/ruby-booker'
   s.license       = 'MIT'
   s.add_dependency "httparty"
+  s.add_dependency "activesupport"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "awesome_print"
 end
