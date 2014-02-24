@@ -55,15 +55,15 @@ module Booker
     def run_service_availability options = {}
       url = build_url '/availability/service'
       defaults = {
-          "EndDateTime" => "/Date(1337223600000)/",
-          "LocationID" => 3749,
-          "MaxTimesPerTreatment" => 5,
-          "StartDateTime" => "/Date(1337004000000)/",
-          "TreatmentCategoryID" => 1,
-          "TreatmentSubCategoryID" => 218,
-          "access_token" => @access_token
+        "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
+        "LocationID" => 3749,
+        "MaxTimesPerTreatment" => 5,
+        "StartDateTime" => Time.now,
+        "TreatmentCategoryID" => 1,
+        "TreatmentSubCategoryID" => 218,
+        "access_token" => @access_token
       }
-      # TODO: run options given start/end time through booker:helpers.format_date
+      convert_time_to_booker_format! options
       return_post_response url, defaults, options
     end
 
@@ -74,7 +74,7 @@ module Booker
       defaults =
         {
         "access_token" => @access_token,
-        "StartDateTime" => "/Date(#{Time.now.to_i})/",
+        "StartDateTime" => Time.now,
         "Itineraries" => [
           #{
             #"IsPackage" => false,
@@ -89,8 +89,9 @@ module Booker
         ],
         "LocationID" => nil,
         "MaxTimesPerDay" => nil,
-        "EndDateTime" => "/Date(#{Time.now.to_i + 60 * 60 * 24})/",
+        "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
       }
+      convert_time_to_booker_format! options
       return_post_response url, defaults, options
     end
 
@@ -249,6 +250,11 @@ module Booker
 
       def build_url path, query = ''
         base_url + path + query
+      end
+
+      def convert_time_to_booker_format! options
+        options['StartDateTime'] = Booker::Helpers.format_date options['StartDateTime'], server_time_offset
+        options['EndDateTime'] = Booker::Helpers.format_date options['EndDateTime'], server_time_offset
       end
   end
 

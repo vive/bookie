@@ -54,8 +54,8 @@ describe Booker::Client do
         it 'is success' do
           response = client.run_service_availability(
             "LocationID" => @location['ID'],
-            "StartDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 5),
-            "EndDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 8),
+            "StartDateTime" => Time.now,
+            "EndDateTime" => Time.now + 5.hours,
             "TreatmentCategoryID" => 29,
             "TreatmentSubCategoryID" => 170
           )
@@ -79,8 +79,8 @@ describe Booker::Client do
           response = client.run_multi_service_availability(
             "LocationID" => @location['ID'],
             "Itineraries" => itineraries,
-            "StartDateTime" => Booker::Helpers.format_date(Time.now),
-            "EndDateTime" => Booker::Helpers.format_date(Time.now + 60 * 60 * 10),
+            "StartDateTime" => Time.now,
+            "EndDateTime" => Time.now + 5.hours,
           )
           it_should_be_success response
         end
