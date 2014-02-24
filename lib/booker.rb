@@ -199,6 +199,7 @@ module Booker
     private
       def return_post_response url, defaults, options
         options = defaults.merge(options)
+        log_options options
         response = post url, options
         parse_body response.body
       end
@@ -255,6 +256,13 @@ module Booker
       def convert_time_to_booker_format! options
         options['StartDateTime'] = Booker::Helpers.format_date options['StartDateTime'], server_time_offset
         options['EndDateTime'] = Booker::Helpers.format_date options['EndDateTime'], server_time_offset
+      end
+
+      def log_options options
+        p "-----------------------"
+        p "Ruby-Booker Options:"
+        p options
+        p "-----------------------"
       end
   end
 
