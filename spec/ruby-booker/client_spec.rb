@@ -127,4 +127,11 @@ describe Booker::Client do
     end
   end
 
+  describe '#get_server_information' do
+    it 'is success' do
+      response = client.get_server_information
+      it_should_be_success response
+    end
+  end
+
 end

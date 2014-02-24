@@ -7,12 +7,13 @@ module Booker
   BASE_PATH = "/WebService4/json/customerService.svc"
 
   class Client
-    attr_reader :url, :access_token, :expires_in
+    attr_reader :url, :access_token, :expires_in, :server_time_offset
 
     def initialize(key, secret)
       @key = key
       @secret = secret
-      set_access_token
+      set_access_token!
+      set_server_time_offset!
     end
 
     # Useful to pull all of paged results and return them as if you did one
@@ -188,8 +189,13 @@ module Booker
       return_get_response url
     end
 
-    private
+    #http://apidoc.booker.com/Method/Detail/147
+    def get_server_information
+      url = build_url "/server_information", "?access_token=#{@access_token}"
+      return_get_response url
+    end
 
+    private
       def return_post_response url, defaults, options
         options = defaults.merge(options)
         response = post url, options
@@ -219,8 +225,7 @@ module Booker
         HTTParty.get url
       end
 
-
-      def set_access_token
+      def set_access_token!
         url      = build_url '/access_token', "?client_id=#{@key}&client_secret=#{@secret}&grant_type=client_credentials"
         response = HTTParty.get(url)
         body     = JSON.parse(response.body)
@@ -232,6 +237,11 @@ module Booker
           @expires_in = body['expires_in']
         end
       end
+
+      def set_server_time_offset!
+        @server_time_offset = get_server_information['ServerTimeZoneOffset']
+      end
+
 
       def base_url
         "http://" + Booker::BASE_HOST + Booker::BASE_PATH
