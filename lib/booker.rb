@@ -2,7 +2,7 @@ require 'httparty'
 require 'booker/helpers'
 
 module Booker
-  VERSION = "0.0.121"
+  VERSION = "0.0.13"
   BASE_HOST = "stable-app.secure-booker.com"
   BASE_PATH = "/WebService4/json/customerService.svc"
 
@@ -90,6 +90,34 @@ module Booker
         "LocationID" => nil,
         "MaxTimesPerDay" => nil,
         "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
+      }
+      convert_time_to_booker_format! options
+      return_post_response url, defaults, options
+    end
+
+    def run_multi_spa_availability options = {}
+      # TODO: Assert required fields are present
+      url = build_url '/availability/multispa'
+      defaults = {
+        #"AirportCode" => "",
+        #"BrandID" => null,
+        #"CityName" => "New York City",
+        #"CountryCode" => "USA",
+        #"IsApiDistributionPartner" => null,
+        #"Latitude" => null,
+        #"Longitude" => null,
+        "Radius" => 20,
+        #"SpaExistsInSpaFinder" => null,
+        #"StateAbbr" => "NY",
+        "ZipCode" => "77057",
+        #"MaxNumberOfLocations" => null,
+        "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
+        #"LocationID" => 3749,
+        #"MaxTimesPerTreatment" => 2,
+        "StartDateTime" => Time.now.to_i,
+        "TreatmentCategoryID" => 30,
+        "TreatmentSubCategoryID" => 218,
+        "access_token" => @access_token
       }
       convert_time_to_booker_format! options
       return_post_response url, defaults, options

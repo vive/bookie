@@ -63,6 +63,19 @@ describe Booker::Client do
         end
       end
 
+      describe '#run_multi_spa_availability' do
+        it 'is success' do
+          response = client.run_multi_spa_availability(
+            "LocationID" => @location['ID'],
+            "StartDateTime" => Time.now,
+            "EndDateTime" => Time.now + 5.hours,
+            "TreatmentCategoryID" => 29,
+            "TreatmentSubCategoryID" => 170
+          )
+          it_should_be_success response
+        end
+      end
+
       describe '#run_multi_service_availability' do
         it 'is success' do
           itineraries = @treatments.map do |treatment|
