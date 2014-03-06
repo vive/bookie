@@ -17,5 +17,12 @@ describe Booker::Helpers do
       Booker::Helpers.format_date(nil).should be_nil
     end
   end
+
+  describe '#parse_date' do
+    it 'converts returned date to datetime' do
+      result = Booker::Helpers.parse_date("/Date(1393995600000)/")
+      result.class.should eq DateTime
+    end
+  end
 end
 

@@ -110,7 +110,7 @@ module Booker
         #"SpaExistsInSpaFinder" => null,
         #"StateAbbr" => "NY",
         "ZipCode" => "77057",
-        #"MaxNumberOfLocations" => null,
+        "MaxNumberOfLocations" => 5,
         "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
         #"LocationID" => 3749,
         #"MaxTimesPerTreatment" => 2,

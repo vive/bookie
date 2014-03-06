@@ -8,5 +8,12 @@ module Booker
 
       "/Date(#{(time.in_time_zone(offset)).to_i * 1000})/"
     end
+
+    def self.parse_date time
+      return nil unless time
+
+      time = time.scan(/\d+/).first.to_i
+      Time.at(time).to_datetime
+    end
   end
 end
