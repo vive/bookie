@@ -9,11 +9,11 @@ module Booker
       "/Date(#{(time.in_time_zone(offset)).to_i * 1000})/"
     end
 
+    # Turn date given by booker api into ruby datetime
     def self.parse_date time
       return nil unless time
 
-      time = time.scan(/\d+/).first.to_i
-      Time.at(time).to_datetime
+      Time.at( time.scan(/\d+/).first.to_i / 1000 ).to_datetime
     end
   end
 end

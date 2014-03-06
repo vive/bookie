@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruby-booker'
-  s.version     = '0.0.14'
+  s.version     = '0.0.15'
   s.date        = '2014-03-04'
   s.summary     = "Ruby querying of Booker API"
   s.description = "Interact with booker api through Ruby"
