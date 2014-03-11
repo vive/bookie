@@ -191,6 +191,15 @@ module Booker
       return_post_response url, defaults, options
     end
 
+    def create_appointment options = {}
+      url = build_url "/appointment/create"
+      defaults = {
+        "access_token" => @access_token,
+      }
+      convert_time_to_booker_format! options
+      return_post_response url, defaults, options
+    end
+
     #http://apidoc.booker.com/Method/Detail/125
     def get_treatment_categories location_id
       url = build_url "/treatment_categories",
@@ -214,6 +223,13 @@ module Booker
     #http://apidoc.booker.com/Method/Detail/134
     def get_location_online_booking_settings location_id
       url = build_url "/location/#{location_id}/online_booking_settings",
+              "?access_token=#{@access_token}"
+      return_get_response url
+    end
+
+    #http://apidoc.booker.com/Method/Detail/107
+    def get_credit_card_types location_id
+      url = build_url "/location/#{location_id}/creditcard_types",
               "?access_token=#{@access_token}"
       return_get_response url
     end
@@ -284,6 +300,18 @@ module Booker
       def convert_time_to_booker_format! options
         options['StartDateTime'] = Booker::Helpers.format_date options['StartDateTime'], server_time_offset
         options['EndDateTime'] = Booker::Helpers.format_date options['EndDateTime'], server_time_offset
+
+        if options['ItineraryTimeSlotList']
+          options['ItineraryTimeSlotList'].each do |time_slot_list|
+
+            time_slot_list['StartDateTime'] = Booker::Helpers.format_date time_slot_list['StartDateTime'], server_time_offset
+
+            time_slot_list['TreatmentTimeSlots'].each do |time_slot|
+              time_slot['StartDateTime'] = Booker::Helpers.format_date time_slot['StartDateTime'], server_time_offset
+            end
+          end
+
+        end
       end
 
       def log_options options
