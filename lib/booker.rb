@@ -3,13 +3,15 @@ require 'booker/helpers'
 
 module Booker
   VERSION = "0.0.16"
-  BASE_HOST = "stable-app.secure-booker.com"
+  STAGING_BASE_HOST = "stable-app.secure-booker.com"
+  PRODUCTION_BASE_HOST = "app.secure-booker.com"
   BASE_PATH = "/WebService4/json/customerService.svc"
 
   class Client
     attr_reader :url, :access_token, :expires_in, :server_time_offset
 
-    def initialize(key, secret)
+    def initialize(key, secret, options = {})
+      @production = options.fetch(:production) { false }
       @key = key
       @secret = secret
       set_access_token!
@@ -290,7 +292,7 @@ module Booker
 
 
       def base_url
-        "http://" + Booker::BASE_HOST + Booker::BASE_PATH
+        "http://" + (@prouduction ? Booker::PRODUCTION_BASE_HOST : Booker::STAGING_BASE_HOST) + Booker::BASE_PATH
       end
 
       def build_url path, query = ''
