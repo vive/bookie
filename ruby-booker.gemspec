@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'ruby-booker'
-  s.version     = '0.0.17'
-  s.date        = '2014-03-28'
+  s.version     = '0.0.18'
+  s.date        = '2014-04-03'
   s.summary     = "Ruby querying of Booker API"
   s.description = "Interact with booker api through Ruby"
   s.authors     = ["Jake Craige"]

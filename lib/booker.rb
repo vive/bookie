@@ -2,7 +2,7 @@ require 'httparty'
 require 'booker/helpers'
 
 module Booker
-  VERSION = "0.0.17"
+  VERSION = "0.0.18"
   STAGING_BASE_HOST = "stable-app.secure-booker.com"
   PRODUCTION_BASE_HOST = "app.secure-booker.com"
   BASE_PATH = "/WebService4/json/customerService.svc"
@@ -292,7 +292,7 @@ module Booker
 
 
       def base_url
-        "http://" + (@prouduction ? Booker::PRODUCTION_BASE_HOST : Booker::STAGING_BASE_HOST) + Booker::BASE_PATH
+        "https://" + (@production ? Booker::PRODUCTION_BASE_HOST : Booker::STAGING_BASE_HOST) + Booker::BASE_PATH
       end
 
       def build_url path, query = ''
