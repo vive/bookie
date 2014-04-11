@@ -202,6 +202,12 @@ module Booker
       return_post_response url, defaults, options
     end
 
+    #http://apidoc.booker.com/Method/Detail/124
+    def get_treatment treatment_id
+      url = build_url "/treatment/#{treatment_id}", "?access_token=#{@access_token}"
+      return_get_response url
+    end
+
     #http://apidoc.booker.com/Method/Detail/125
     def get_treatment_categories location_id
       url = build_url "/treatment_categories",

@@ -104,6 +104,13 @@ describe Booker::Client do
           }.to raise_error(Booker::ArgumentError)
         end
       end
+
+      describe '#get_treatment' do
+        it "is success" do
+          response =  client.get_treatment @treatments.first['ID']
+          it_should_be_success response
+        end
+      end
     end
 
     describe '#get_treatment_categories' do
