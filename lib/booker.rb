@@ -2,7 +2,7 @@ require 'httparty'
 require 'booker/helpers'
 
 module Booker
-  VERSION = "0.0.18"
+  VERSION = "0.0.19"
   STAGING_BASE_HOST = "stable-app.secure-booker.com"
   PRODUCTION_BASE_HOST = "app.secure-booker.com"
   BASE_PATH = "/WebService4/json/customerService.svc"
