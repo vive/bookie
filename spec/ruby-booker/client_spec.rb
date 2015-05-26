@@ -10,6 +10,7 @@ describe Booker::Client do
 
   describe '#find_locations' do
     it 'is success' do
+      puts 'getting response'
       response = client.find_locations
       it_should_be_success response
     end

@@ -1,14 +1,21 @@
 require 'httparty'
 require 'booker/helpers'
-
+require 'booker/version'
+require 'logger'
 module Booker
-  VERSION = "0.0.19"
-  STAGING_BASE_HOST = "stable-app.secure-booker.com"
+  STAGING_BASE_HOST = "apicurrent-app.booker.ninja"
   PRODUCTION_BASE_HOST = "app.secure-booker.com"
   BASE_PATH = "/WebService4/json/customerService.svc"
 
   class Client
     attr_reader :url, :access_token, :expires_in, :server_time_offset
+    def logger
+      @logger ||= Logger.new STDOUT
+    end
+
+    def logger=logger
+      @logger = logger
+    end
 
     def initialize(key, secret, options = {})
       @production = options.fetch(:production) { false }
@@ -40,12 +47,13 @@ module Booker
         results << last_result[result_name]
         results.flatten!
 
+
         if last_result['TotalResultsCount']
           total_results  = last_result['TotalResultsCount']
         else
           total_results = 0
         end
-
+        logger.debug "#{results.length} / #{total_results}"
         page_number+=1
       end while results.length < total_results-1
 
@@ -173,6 +181,29 @@ module Booker
       return_post_response url, defaults, options
     end
 
+    def find_employees options = {}
+      url = build_url '/employees'
+
+      defaults = {
+        "IgnoreFreelancers" => true,
+        "LocationID" => nil,
+        "OnlyIncludeActiveEmployees" => true,
+        "PageNumber" => 1,
+        "PageSize" => 10,
+        "SortBy" => [
+          {
+            "SortBy" => "LastName",
+            "SortDirection" => 0
+          }
+        ],
+        "TreatmentID" => nil,
+        "UsePaging" => true,
+        "access_token" => @access_token
+      }
+
+      return_post_response url, defaults, options
+    end
+
     # http://apidoc.booker.com/Method/Detail/853
     def find_locations_partial options = {}
       url = build_url "/locations/partial"
@@ -200,6 +231,21 @@ module Booker
       }
       convert_time_to_booker_format! options
       return_post_response url, defaults, options
+    end
+
+    def create_customer options = {}
+      url = build_url "/customer"
+
+      defaults = {
+        'FirstName' => '',
+        'LastName' => '',
+        'HomePhone' => '',
+        'LocationID' => '',
+        'Email' => '',
+        "access_token" => @access_token,
+      }
+
+      return_post_response url, defaults, Booker::Helpers.new_client_params(options)
     end
 
     #http://apidoc.booker.com/Method/Detail/124
@@ -323,10 +369,11 @@ module Booker
       end
 
       def log_options options
-        p "-----------------------"
-        p "Ruby-Booker Options:"
-        p options
-        p "-----------------------"
+        msg = "-----------------------\n"
+        msg << "Ruby-Booker Options:\n"
+        msg << "#{options}"
+        msg << "\n-----------------------"
+        logger.debug msg
       end
   end
 

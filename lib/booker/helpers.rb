@@ -15,5 +15,15 @@ module Booker
 
       Time.at( time.scan(/\d+/).first.to_i / 1000 ).to_datetime
     end
+
+    def self.new_client_params(opts)
+       {
+        'FirstName' => opts[:first_name],
+        'LastName' => opts[:last_name],
+        'HomePhone' => opts[:phone],
+        'LocationID' => opts[:location_id],
+        'Email' => opts[:email]
+      }
+    end
   end
 end
