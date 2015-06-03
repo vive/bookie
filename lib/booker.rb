@@ -62,7 +62,7 @@ module Booker
       })
     end
 
-    def run_service_availability options = {}
+    def run_service_availability options = {}, pass_response = false
       url = build_url '/availability/service'
       defaults = {
         "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
@@ -74,11 +74,15 @@ module Booker
         "access_token" => @access_token
       }
       convert_time_to_booker_format! options
-      return_post_response url, defaults, options
+      if pass_response
+        request_params url, defaults, options
+      else
+        return_post_response url, defaults, options
+      end
     end
 
     #http://apidoc.booker.com/Method/Detail/129
-    def run_multi_service_availability options = {}
+    def run_multi_service_availability options = {}, pass_response = false
       raise Booker::ArgumentError, 'Itineraries is required' unless options['Itineraries']
       url = build_url "/availability/multiservice"
       defaults =
@@ -102,10 +106,14 @@ module Booker
         "EndDateTime" => Time.now.to_i + 60 * 60 * 5,
       }
       convert_time_to_booker_format! options
-      return_post_response url, defaults, options
+      if pass_response
+        request_params url, defaults, options
+      else
+        return_post_response url, defaults, options
+      end
     end
 
-    def run_multi_spa_availability options = {}
+    def run_multi_spa_availability options = {}, pass_response = false
       # TODO: Assert required fields are present
       url = build_url '/availability/multispa'
       defaults = {
@@ -130,7 +138,11 @@ module Booker
         "access_token" => @access_token
       }
       convert_time_to_booker_format! options
-      return_post_response url, defaults, options
+      if pass_response
+        request_params url, defaults, options
+      else
+        return_post_response url, defaults, options
+      end
     end
 
     # http://apidoc.booker.com/Method/Detail/123
@@ -300,6 +312,14 @@ module Booker
         log_options options
         response = post url, options
         parse_body response.body
+      end
+
+      def request_params url, defaults, options
+        options = defaults.merge(options)
+        {
+          url: url,
+          options: options
+        }
       end
 
       def return_get_response url
