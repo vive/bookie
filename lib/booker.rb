@@ -19,8 +19,10 @@ module Booker
 
     def initialize(key, secret, options = {})
       @production = options.fetch(:production) { false }
+      @log_level = options.fetch(:log_level) { Logger::DEBUG }
       @key = key
       @secret = secret
+      set_log_level!
       set_access_token!
       set_server_time_offset!
     end
@@ -343,6 +345,10 @@ module Booker
 
       def get url
         HTTParty.get url
+      end
+
+      def set_log_level!
+        logger.level = @log_level
       end
 
       def set_access_token!
