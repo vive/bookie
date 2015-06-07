@@ -1,4 +1,4 @@
-# ruby-booker 0.0.19
+# ruby-booker 0.0.24
 
 This gem provides a simple ruby layer for integrating with the [Booker
 API](http://apidoc.booker.com/Content/index.html)
