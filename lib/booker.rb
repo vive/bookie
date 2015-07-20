@@ -246,7 +246,21 @@ module Booker
       convert_time_to_booker_format! options
       return_post_response url, defaults, options
     end
-
+  
+    def cancel_appointment options = {}
+      raise Booker::ArgumentError, 'ID is required' unless options['ID']
+      url = build_url "/appointment/cancel"
+      defaults = {
+        "access_token" => @access_token,
+      }
+      return_put_response url, defaults, options
+    end
+ 
+     def get_appointment appointment_id
+       url = build_url "/appointment/#{appointment_id}", "?access_token=#{@access_token}"
+       return_get_response url
+     end
+  
     def create_customer options = {}
       url = build_url "/customer"
 
@@ -324,6 +338,13 @@ module Booker
         }
       end
 
+      def return_put_response url, defaults, options
+        options = defaults.merge(options)
+        log_options options
+        response = put url, options
+        parse_body response.body
+      end  
+
       def return_get_response url
         response = get url
         parse_body response.body
@@ -345,6 +366,14 @@ module Booker
 
       def get url
         HTTParty.get url
+      end
+
+      def put url, put_data
+        options = {
+          body: put_data.to_json,
+          headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
+        }
+        HTTParty.put url, options
       end
 
       def set_log_level!
