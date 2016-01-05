@@ -4,8 +4,7 @@ require 'auth'
 require 'awesome_print'
 require 'active_support/core_ext/numeric/time'
 
-require 'ruby-booker'
+require 'bookie'
 
 RSpec.configure do |config|
-  # some (optional) config here
 end

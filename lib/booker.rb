@@ -2,6 +2,7 @@ require 'httparty'
 require 'booker/helpers'
 require 'booker/version'
 require 'logger'
+
 module Booker
   STAGING_BASE_HOST = "apicurrent-app.booker.ninja"
   PRODUCTION_BASE_HOST = "app.secure-booker.com"
@@ -13,7 +14,7 @@ module Booker
       @logger ||= Logger.new STDOUT
     end
 
-    def logger=logger
+    def logger=(logger)
       @logger = logger
     end
 
@@ -425,7 +426,7 @@ module Booker
 
       def log_options options
         msg = "-----------------------\n"
-        msg << "Ruby-Booker Options:\n"
+        msg << "Bookie Options:\n"
         msg << "#{options}"
         msg << "\n-----------------------"
         logger.debug msg

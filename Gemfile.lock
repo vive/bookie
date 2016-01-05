@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    ruby-booker (0.0.26)
+    bookie (1.0.0)
       activesupport
       httparty
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.1)
+    activesupport (4.2.5)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -17,13 +17,13 @@ GEM
     awesome_print (1.2.0)
     coderay (1.1.0)
     diff-lcs (1.2.5)
-    httparty (0.13.3)
+    httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
-    json (1.8.2)
+    json (1.8.3)
     method_source (0.8.2)
-    minitest (5.6.1)
+    minitest (5.8.3)
     multi_xml (0.5.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -48,7 +48,10 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bookie!
   pry
   rake (~> 10.4)
   rspec
-  ruby-booker!
+
+BUNDLED WITH
+   1.11.2
